@@ -40,7 +40,9 @@ const T=$("#term"),out=$("#out"),cmd=$("#cmd"),sug=$("#sug");let hist=[],hi=0;
 const say=h=>{out.insertAdjacentHTML("beforeend",h+"\n");out.scrollTop=out.scrollHeight};
 const P=DATA.projects,link=(u,l)=>`<a href="${u}" target="_blank" rel="noopener">${l||u}</a>`;
 const C={
-help:()=>`Commands:\n  <span class="pp">whoami about skills projects experience education achievements contact theme breach clear</span>\n  <span class="pp">open &lt;name&gt;</span>   ${P.map(p=>p.id).join(", ")}\nTab completes. Up and Down recall history. Esc closes.`,
+help:()=>`Commands:\n  <span class="pp">whoami about skills projects experience education achievements contact theme breach unlock clear</span>\n  <span class="pp">go &lt;section&gt;</span>  home, about, skills, projects, experience, leadership, contact\n  <span class="pp">wall</span>  Open the guestbook\n  <span class="pp">open &lt;name&gt;</span>   ${P.map(p=>p.id).join(", ")}\nTab completes. Up/Down recalls history. Esc closes.`,
+wall:()=>{window.location.href="wall.html";return"Opening the wall…"},
+go:a=>{const key=a.trim().toLowerCase();if(key==="wall"||key==="guestbook"){window.location.href="wall.html";return"Opening the wall…"}const aliases={home:"home",about:"about",skills:"skills",projects:"projects",experience:"experience",leadership:"leadership",contact:"contact",education:"about",achievements:"leadership"};const id=aliases[key];if(!id)return`Unknown destination "${key}". Try: home, about, skills, projects, experience, leadership, contact, wall.`;hide();document.getElementById(id)?.scrollIntoView({behavior:RM?"auto":"smooth",block:"start"});return`Navigating to ${id}…`},
 whoami:()=>`<span class="pp">Fathima Hisana Nissar</span>\nComputer Science Undergraduate | Software Development | AI/ML | Cybersecurity\nB.Tech CSE, Amrita Vishwa Vidyapeetham, Bengaluru. Expected 2028.`,
 about:()=>`B.Tech CSE student, graduating 2028, CGPA 8.9/10.\nI like solving problems through code, exploring emerging technologies, and building practical software.\nInterests: software engineering, DSA, machine learning, AI, cybersecurity.`,
 skills:()=>DATA.skills.map(s=>`<span class="cc">${s[0]}</span>\n  ${s[2]}`).join("\n"),
@@ -53,9 +55,10 @@ theme:()=>{setTheme(root.dataset.theme==="dark"?"light":"dark");return`Theme set
 open:a=>{if(a==="face"){window.open("https://asebface.in/","_blank","noopener");return"Opening asebface.in in a new tab."}
 const i=P.findIndex(p=>p.id===a);if(i<0)return`No project called "${a}". Try: ${P.map(p=>p.id).join(", ")}`;hide();openP(i);return""},
 breach:()=>{hide();setTimeout(breach,200);return""},
+unlock:()=>unlockPortrait("terminal")?"Portrait unlocked.":"Portrait is already unlocked.",
 clear:()=>{out.innerHTML="";return""}};
 const names=Object.keys(C);
-sug.innerHTML=["help","projects","open fake-news","skills","contact","breach"].map(s=>`<button type="button">${s}</button>`).join("");
+sug.innerHTML=["help","go projects","wall","open fake-news","skills","contact"].map(s=>`<button type="button">${s}</button>`).join("");
 sug.addEventListener("click",e=>{if(e.target.tagName==="BUTTON"){cmd.value=e.target.textContent;run()}});
 function run(){const v=cmd.value.trim();cmd.value="";if(!v)return;hist.push(v);hi=hist.length;
 const esc=v.replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));say(`<span class="pp">$</span> ${esc}`);
@@ -74,16 +77,36 @@ const tg=e.target,typing=tg&&(tg.tagName==="INPUT"||tg.tagName==="TEXTAREA"||tg.
 if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==="k"){if(typing)return;e.preventDefault();T.classList.contains("show")?hide():show()}
 if(e.key==="Escape"&&T.classList.contains("show"))hide()});
 /* signal breach */
-const RM=matchMedia("(prefers-reduced-motion:reduce)").matches,HOV=matchMedia("(hover:hover)").matches;
+const RM=matchMedia("(prefers-reduced-motion:reduce)").matches;
 const gl=[...document.querySelectorAll(".gl")];
 function heroGlitch(){gl.forEach((e,i)=>setTimeout(()=>{e.classList.add("go");setTimeout(()=>e.classList.remove("go"),RM?650:520)},i*70))}
 let busy=false;
 function breach(){if(busy)return;busy=true;heroGlitch();document.body.classList.add("breach");setTimeout(()=>{document.body.classList.remove("breach");busy=false},RM?700:650)}
+let portraitUnlocked=false;
+function unlockPortrait(source="click"){
+  if(portraitUnlocked)return false;
+  portraitUnlocked=true;
+  const porEl=$("#por");
+  porEl.classList.remove("locked");
+  porEl.classList.add("unlocking");
+  porEl.setAttribute("aria-label","Portrait unlocked: Fathima Hisana Nissar");
+  setTimeout(()=>{porEl.classList.remove("unlocking");porEl.classList.add("unlocked");porEl.setAttribute("aria-pressed","true");},RM?0:760);
+  return true;
+}
 const por=$("#por");
 for(let i=0;i<6;i++){const c=por.querySelector(".f").cloneNode(true);c.classList.add("sl");c.setAttribute("aria-hidden","true");c.style.clipPath=`inset(${i*16.66}% 0 ${100-(i+1)*16.66}% 0)`;c.style.setProperty("--x",((i%2?1:-1)*(10+i*4))+"px");c.style.borderLeft="3px solid "+["var(--mag)","var(--cor)","var(--lil)"][i%3];por.appendChild(c)}
-por.addEventListener("click",breach);
-por.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();breach()}});
-if(HOV)por.addEventListener("pointerenter",breach);
+// The screen-wide signal breach is deliberately click-triggered only.
+function activatePortrait(){
+  breach();
+  unlockPortrait("click"); // unlocks once; later clicks only replay the signal glitch
+}
+por.addEventListener("click",activatePortrait);
+por.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();activatePortrait()}});
+// Discourage casual saving/opening of the portrait. Since it is a CSS background,
+// there is no standalone image link or image element to open in a new tab.
+por.addEventListener("contextmenu",e=>e.preventDefault());
+por.addEventListener("dragstart",e=>e.preventDefault());
+por.querySelector(".f").setAttribute("aria-hidden","true");
 let hc=0;$("#h1").addEventListener("pointerenter",()=>{if(Date.now()-hc>2500){hc=Date.now();heroGlitch()}});
 setTimeout(heroGlitch,800);
 if(!RM){setInterval(()=>{if(!document.hidden)heroGlitch()},20000);
@@ -165,3 +188,16 @@ function run(){res.textContent="";const t=inp.value;let n=0;R.forEach(([name,re]
 inp.oninput=run;d.addEventListener("click",e=>{const i=e.target.dataset&&e.target.dataset.i;if(i!==undefined){inp.value=S[i];run()}});
 run();return null}
 const DEMO={"fake-news":mountNet,aabs:mountSched,safeshift:mountSafe,clickbait:mountClick};
+
+
+/* Short, skippable boot sequence. */
+(function(){
+  const screen=document.getElementById("boot"),skip=document.getElementById("bootSkip");
+  if(!screen)return;
+  let closed=false;
+  function closeBoot(){if(closed)return;closed=true;screen.classList.add("breach-out");window.setTimeout(()=>{screen.classList.add("done");screen.setAttribute("aria-hidden","true");document.body.classList.remove("booting");},window.matchMedia("(prefers-reduced-motion: reduce)").matches?0:420);}
+  skip?.addEventListener("click",closeBoot);
+  const reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduce){closeBoot();return;}
+  window.setTimeout(closeBoot,2450);
+})();
