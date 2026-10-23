@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wall Admin — Hisana / 07</title>
+<script>try{var t=localStorage.getItem('theme');if(!t)t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.dataset.theme=t}catch(e){document.documentElement.dataset.theme='dark'}</script>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;800&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#17131D;--bg2:#24202A;--ink:#F4EAF2;--mute:#b6abc2;--mag:#FF3D91;--cor:#FF684A;--lil:#B8A1FF;--sil:#D3D3DF;--line:rgba(211,211,223,.22);--on:#17131D;--d:'Unbounded',Arial Black,sans-serif;--b:'DM Sans',system-ui,sans-serif;--m:'JetBrains Mono',monospace}
+:root[data-theme="light"]{--bg:#ECE8F4;--bg2:#DDD6EC;--ink:#24142E;--mute:#5a4a6a;--mag:#D4126A;--cor:#D93C18;--lil:#6A4BD4;--sil:#8d8aa3;--line:rgba(36,20,46,.25);--on:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 var(--b);min-height:100vh}body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:10;background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(130,100,150,.035) 3px 4px)}a{color:inherit;text-decoration:none}button,input{font:inherit}.shell{width:min(1000px,calc(100% - 40px));margin:auto}.top{height:76px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);font:12px var(--m);text-transform:uppercase}.brand{font:800 14px var(--d);letter-spacing:-.04em}.brand i{color:var(--mag);font-style:normal}.topright{display:flex;gap:10px}.smallbtn,.primary,.quiet{border:1px solid var(--line);color:var(--ink);background:transparent;padding:10px 13px;cursor:pointer;font:11px var(--m)}.smallbtn:hover,.quiet:hover{border-color:var(--mag)}.hero{padding:66px 0 34px}.kicker{font:11px var(--m);color:var(--cor);letter-spacing:.12em;text-transform:uppercase}.hero h1{font:800 clamp(34px,6vw,64px)/1.05 var(--d);letter-spacing:-.07em;margin:16px 0}.hero h1 em{font-style:normal;color:var(--mag)}.hero p,.muted{color:var(--mute)}.panel{background:var(--bg2);border:1px solid var(--line);padding:clamp(20px,4vw,34px);margin:18px 0 40px}.panel h2{font:800 21px var(--d);letter-spacing:-.05em;margin:0 0 8px}.field{display:block;margin:17px 0}.field span{display:block;font:10px var(--m);text-transform:uppercase;color:var(--cor);margin-bottom:7px}.field input{width:100%;background:var(--bg);border:1px solid var(--line);padding:13px;color:var(--ink);outline:none}.field input:focus{border-color:var(--lil)}.primary{background:var(--mag);color:var(--on);border-color:var(--mag);font-weight:700}.primary:disabled{opacity:.6;cursor:wait}.status{font-size:12px;color:var(--mute);min-height:1.5em;margin:14px 0 0}.status.error{color:var(--cor)}.hidden{display:none!important}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:14px;margin:30px 0 16px}.toolbar h2{font:800 20px var(--d);margin:0}.list{display:grid;gap:12px;margin-bottom:60px}.note{padding:20px;border:1px solid var(--line);background:var(--bg2);position:relative;overflow-wrap:anywhere}.meta{display:flex;justify-content:space-between;gap:10px;color:var(--mute);font:10px var(--m);text-transform:uppercase;margin-bottom:12px}.idx{color:var(--mag)}.note p{margin:0 0 14px;white-space:pre-wrap}.sig{font:12px var(--m);color:var(--lil)}.note-actions{display:flex;justify-content:flex-end;margin-top:15px}.danger{border-color:var(--cor);color:var(--cor)}.footer{border-top:1px solid var(--line);padding:20px 0 32px;color:var(--mute);font:10px var(--m);text-transform:uppercase;display:flex;justify-content:space-between;gap:12px}.scan{position:fixed;left:0;top:0;width:100%;height:2px;background:var(--mag);opacity:.5;animation:sweep 7s linear infinite;pointer-events:none;z-index:11}@keyframes sweep{from{top:-3px}to{top:100vh}}@media(max-width:600px){.shell{width:calc(100% - 28px)}.top{height:64px}.hero{padding-top:45px}.toolbar,.footer{align-items:flex-start;flex-direction:column}.meta{flex-direction:column}}
+</style></head>
+<body><div class="scan" aria-hidden="true"></div><div class="shell">
+<header class="top"><a class="brand" href="index.html">HISANA<i>/</i>07</a><div class="topright"><a class="smallbtn" href="wall.html">↖ Public wall</a><button class="smallbtn" id="theme" type="button">◐ Theme</button></div></header>
+<main><section class="hero"><div class="kicker">PRIVATE CONTROLS / AUTH REQUIRED</div><h1>Wall <em>admin.</em></h1><p>Sign in with your registered admin account to moderate guestbook notes.</p></section>
+<section class="panel" id="loginPanel"><h2>Admin sign in</h2><p class="muted">Access is restricted to accounts registered in the guestbook admin table.</p><form id="loginForm"><label class="field"><span>Email</span><input name="email" type="email" autocomplete="username" required></label><label class="field"><span>Password</span><input name="password" type="password" autocomplete="current-password" required></label><button class="primary" id="loginBtn" type="submit">SIGN IN ↗</button><p class="status" id="loginStatus" role="status"></p></form></section>
+<section id="dashboard" class="hidden"><div class="toolbar"><div><div class="kicker">AUTHENTICATED</div><h2>Guestbook notes</h2><p class="muted" id="adminEmail"></p></div><button class="quiet" id="signOut" type="button">SIGN OUT</button></div><p class="status" id="dashStatus" role="status"></p><div class="list" id="notes"></div></section>
+</main><footer class="footer"><span>HISANA / 07 — ADMIN</span><span>NOT LINKED FROM PUBLIC NAVIGATION</span></footer></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const $=s=>document.querySelector(s),root=document.documentElement;
+const SUPABASE_URL='https://bipprlnnundnimnhhakk.supabase.co';
+const SUPABASE_ANON_KEY='sb_publishable_rL2ineRGjT7USHkCkb-pmA_QM5yAryz';
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+$('#theme').addEventListener('click',()=>{const t=root.dataset.theme==='dark'?'light':'dark';root.dataset.theme=t;try{localStorage.setItem('theme',t)}catch(e){}});
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function date(s){try{return new Date(s).toLocaleString(undefined,{dateStyle:'medium',timeStyle:'short'})}catch(e){return ''}}
+function status(el,msg,error=false){el.textContent=msg;el.classList.toggle('error',error)}
+let currentUser=null;
+function showLogin(message='',error=false){$('#loginPanel').classList.remove('hidden');$('#dashboard').classList.add('hidden');status($('#loginStatus'),message,error)}
+function showDashboard(){ $('#loginPanel').classList.add('hidden');$('#dashboard').classList.remove('hidden');$('#adminEmail').textContent=currentUser?.email||''; }
+async function checkAdmin(user){
+ const {data,error}=await db.from('guestbook_admins').select('user_id').eq('user_id',user.id).maybeSingle();
+ if(error)throw new Error('Could not verify admin access. Check the guestbook_admins RLS policy.');
+ if(!data)throw new Error('This account is not registered as a wall admin.');
+}
+async function loadNotes(){
+ const el=$('#notes');el.innerHTML='';status($('#dashStatus'),'Loading notes…');
+ const {data,error}=await db.from('guestbook_notes').select('id,name,link,message,created_at').order('created_at',{ascending:false}).limit(200);
+ if(error){status($('#dashStatus'),'Could not load notes. Please refresh and try again.',true);return;}
+ status($('#dashStatus'),`${data.length} note${data.length===1?'':'s'} loaded.`);
+ if(!data.length){el.innerHTML='<p class="muted">No notes yet.</p>';return;}
+ el.innerHTML=data.map((n,i)=>`<article class="note"><div class="meta"><span class="idx">${String(data.length-i).padStart(2,'0')} / NOTE</span><span>${esc(date(n.created_at))}</span></div><p>${esc(n.message)}</p><div class="sig">${esc(n.name)}${n.link?` · <a href="${esc(n.link)}" target="_blank" rel="noopener noreferrer">LINK ↗</a>`:''}</div><div class="note-actions"><button class="quiet danger" type="button" data-delete="${esc(n.id)}">DELETE NOTE ×</button></div></article>`).join('');
+ el.querySelectorAll('[data-delete]').forEach(btn=>btn.addEventListener('click',()=>deleteNote(btn.dataset.delete,btn)));
+}
+async function activate(user){
+ try{await checkAdmin(user);currentUser=user;showDashboard();await loadNotes();}
+ catch(e){await db.auth.signOut();currentUser=null;showLogin(e.message,true);}
+}
+$('#loginForm').addEventListener('submit',async e=>{
+ e.preventDefault();const btn=$('#loginBtn');btn.disabled=true;btn.textContent='VERIFYING…';status($('#loginStatus'),'Checking account…');
+ const fd=new FormData(e.currentTarget);const {data,error}=await db.auth.signInWithPassword({email:String(fd.get('email')).trim(),password:String(fd.get('password'))});
+ btn.disabled=false;btn.textContent='SIGN IN ↗';
+ if(error){status($('#loginStatus'),'Sign-in failed. Check your email and password.',true);return;}
+ await activate(data.user);
+});
+async function deleteNote(id,btn){
+ if(!currentUser||!confirm('Permanently delete this note?'))return;btn.disabled=true;btn.textContent='DELETING…';
+ const {error}=await db.from('guestbook_notes').delete().eq('id',id);
+ if(error){btn.disabled=false;btn.textContent='DELETE NOTE ×';status($('#dashStatus'),'Delete failed. Your account may not have admin permissions.',true);return;}
+ await loadNotes();
+}
+$('#signOut').addEventListener('click',async()=>{await db.auth.signOut();currentUser=null;$('#loginForm').reset();showLogin('You have signed out.');});
+db.auth.getSession().then(async({data,error})=>{if(error){showLogin('Could not restore your session. Please sign in.',true);return;}if(data.session)await activate(data.session.user);else showLogin();});
+db.auth.onAuthStateChange((event,session)=>{if(event==='SIGNED_OUT'){currentUser=null;showLogin();}});
+</script></body></html>
