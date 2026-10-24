@@ -470,3 +470,6 @@ img,svg{max-width:100%}
  #skills .sk div:nth-child(odd){margin-right:14px}
  #skills .sk div:nth-child(1){margin-right:0}
 }
+
+/* Leadership now has two items: keep a clean two-column row */
+@media(min-width:1001px){.lead{grid-template-columns:repeat(2,minmax(0,1fr))}}

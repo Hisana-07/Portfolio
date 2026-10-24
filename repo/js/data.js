@@ -16,9 +16,8 @@ exp:[
 {role:"ML Intern",org:"NPOL, DRDO",when:"June 2026",text:"Work involving machine learning and Principal Component Analysis (PCA)."},
 {role:"DevRevamp: From Zero to Portfolio-Ready",org:"Kaizen Solutions",when:"June 2025",text:"10-day online program covering Git/GitHub, Figma, HTML/CSS, and Flutter. Worked in a team to build and deploy a live project that mentors assessed."},
 {role:"Cyber Job Simulation",org:"Deloitte (via Forage)",when:"July 2025",text:"Completed practical cyber security tasks and received a certificate of completion."}],
-nums:[["17","IEEE clubs I coordinate with as Web Co-Chair"],["~100","students in the Python workshop I conducted"],["#15","rank among ~600 participants in a CTF"]],
+nums:[["IEEE","Student Body Web Co-Chair"],["~100","students in the Python workshop I conducted"],["#15","rank among ~600 participants in a CTF"]],
 lead:[
 {t:"Tech Division Head, FACE Amrita",d:"Technical student leadership and involvement in technical events and collaborative initiatives."},
-{t:"Web Co-Chair, IEEE Students Club",d:"Web development and coordination across student communities."},
-{t:"CTF for Class XII",d:"Designed a capture-the-flag competition for Class XII students."}],
+{t:"Web Co-Chair, IEEE Students Club",d:"Web development and coordination across student communities."}],
 contact:{email:"fhn.0706@gmail.com",github:"https://github.com/Hisana-07",linkedin:"https://linkedin.com/in/hisana-nissar-736b7936b"}};
